@@ -172,6 +172,11 @@ def solve_square(board,pieces,dice,plot_when_solving=False):
     '''
 
     debug = False
+    # Switch on interactive plotting if plot_when_solving is set
+    # Delay between plotted shapes is frame_delay (in seconds) 
+    if plot_when_solving:
+        frame_delay = 0.2
+        plt.ion()
 
     # Start by sorting the pieces into order of decreasing complexity
     sort_pieces(pieces)
@@ -206,8 +211,10 @@ def solve_square(board,pieces,dice,plot_when_solving=False):
                     # Attempt to add piece to the board. It will only be added
                     # if it fits (which sets piece.on_board to True)
                     board.add_piece(piece,piece.x,piece.y)
-                    if plot_when_solving:
-                        piece.draw_mpl()
+                    if piece.on_board:
+                        if plot_when_solving:
+                            piece.draw_mpl()
+                            plt.pause(frame_delay)
 
                     # Add to number of steps
                     i_steps += 1
@@ -248,6 +255,9 @@ def solve_square(board,pieces,dice,plot_when_solving=False):
     else:
         print('No valid solution to this Genuis Square after ',i_steps,' steps.')
   
+    if plot_when_solving:
+        plt.ioff()
+    
     return
 
 def revert_to_last_piece(board,piece,i_piece,pieces,i_orientation,plot_when_solving,debug):
@@ -267,11 +277,14 @@ def revert_to_last_piece(board,piece,i_piece,pieces,i_orientation,plot_when_solv
     if debug:
         print('After reverting piece:',i_piece, i_orientation, piece.y, piece.x)
         piece.print_terminal()
+    
     # Remove the previous piece from the board
     board.remove_piece(piece)
     # And remove it from the board
+    fig = plt.gcf()
     if plot_when_solving:
-        piece.delete_mpl()
+        for patch in piece.patches:
+            patch.remove()
 
     # Increase x by 1
     piece.x += 1

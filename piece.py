@@ -92,9 +92,3 @@ class Piece:
          Draw piece on board (if board has already been defined)
          '''
          draw_piece_mpl(self)
-
-    def delete_mpl(self):
-         '''
-         Remove piece from board (if board has already been defined)
-         '''
-         draw_piece_mpl(self,remove=True)

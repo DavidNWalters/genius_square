@@ -53,6 +53,8 @@ if __name__ == '__main__':
     pieces = define_pieces()
 
     # Call algorithm to solve the square
-    solve_square(board,pieces,dice)
+    # Set plot_when_solving to True
+    plot_when_solving = True
+    solve_square(board,pieces,dice,plot_when_solving=plot_when_solving)
 
     plt.show()

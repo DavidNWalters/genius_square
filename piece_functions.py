@@ -107,17 +107,13 @@ def print_piece_terminal(piece):
     print(df)
     print()    
 
-def draw_piece_mpl(piece,remove=False):
+def draw_piece_mpl(piece):
     '''
-    Draw (or remove) piece in its current location and orientation
+    Draw piece in its current location and orientation
 
     Parameters:
         piece: object
             Genius square piece defined by the object Piece
-
-        remove: logical (optional, default=False)
-            Remove rather than add the piece to the board
-            (actually, this just plots a black square over the top of the coloured one)
     '''
 
     # Calculate a list of locations in the piece 
@@ -127,23 +123,21 @@ def draw_piece_mpl(piece,remove=False):
 
     ax = plt.gca()
 
+    piece.patches=[]
+
     i = 0
     for y in y_vals:
         j = 0
         for x in x_vals:
+            # Set up a list in the piece object to store plotted patches
             if piece.array[i,j] == 1:
-
-                if remove == False:
-                    colour = piece.colour
-                else:
-                    colour = 'k'
-
+                colour = piece.colour
                 pad=0.02
                 rect = patches.FancyBboxPatch((x+pad, y+pad), 1-2*pad, 1-2*pad,
                         boxstyle="round,pad=-0.01,rounding_size=0.1",
                         fc=colour)
 
-                ax.add_patch(rect)
+                piece.patches.append(ax.add_patch(rect))
 
             j += 1
 
